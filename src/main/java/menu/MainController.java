@@ -1,5 +1,8 @@
 package menu;
 
+import static menu.convertor.Convertor.COMMA;
+import static menu.convertor.Convertor.splitInput;
+
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +19,9 @@ public class MainController {
     }
 
     public void run() {
-        List<String> inputCoaches = new ArrayList<>(Arrays.asList("토미", "제임스", "포코"));
+        outputView.printStart();
+        String inputCoachNames = inputView.readCoachName();
+        List<String> inputCoaches = splitInput(inputCoachNames,COMMA);
         List<String> tomiHateMenu = new ArrayList<>(Arrays.asList("맛있는 빵", "김밥", "볶음면"));
         List<String> jamesHateMenu = new ArrayList<>(Arrays.asList("바케트", "끼슈", "나시고랭"));
         List<String> pocoHateMenu = new ArrayList<>(Arrays.asList("하이라이스", "떡볶이", "오코노미야끼"));
