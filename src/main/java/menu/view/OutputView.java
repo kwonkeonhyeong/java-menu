@@ -38,7 +38,7 @@ public class OutputView {
                 System.out.print(" | ");
             }
         }
-        System.out.print(" ]");
+        System.out.println(" ]");
     }
 
     public void printBlank() {

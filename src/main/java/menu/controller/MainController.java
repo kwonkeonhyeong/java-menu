@@ -6,10 +6,10 @@ import static menu.convertor.Convertor.splitInput;
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import menu.domain.Coaches;
 import menu.domain.menu.Category;
 import menu.view.InputView;
 import menu.view.OutputView;
@@ -28,23 +28,22 @@ public class MainController {
         String inputCoachNames = inputView.readCoachName();
         List<String> inputCoaches = splitInput(inputCoachNames,COMMA);
 
-        Map<String, List<String>> coaches = new LinkedHashMap<>();
-        for (String inputCoach : inputCoaches) {
-            String inputHateMenus= inputView.readHateMenu(inputCoach);
-            coaches.put(inputCoach, splitInput(inputHateMenus,COMMA));
-        }
+        Coaches coaches = Coaches.create();
+        saveCoachInformation(coaches, inputCoaches);
 
         List<String> recommendCategories = recommendCategory();
 
         Map<String, List<String>> recommendResult = makeRecommendResult(coaches,recommendCategories);
 
-        outputView.printRecommendEND();
-        displayRecommend("구분",Arrays.asList("월요일","화요일","수요일","목요일","금요일"));
-        displayRecommend("카테고리", recommendCategories);
-        for (String coach : recommendResult.keySet()) {
-            displayRecommend(coach,recommendResult.get(coach));
-        }
+        displayRecommend(recommendCategories, recommendResult);
         outputView.printEND();
+    }
+
+    public void saveCoachInformation(Coaches coaches,List<String> inputCoaches) {
+        for (String inputCoach : inputCoaches) {
+            String inputHateMenus= inputView.readHateMenu(inputCoach);
+            coaches.addCoachInformation(inputCoach, splitInput(inputHateMenus,COMMA));
+        }
     }
 
     public List<String> recommendCategory() {
@@ -76,23 +75,28 @@ public class MainController {
         return menu;
     }
 
-    public Map<String, List<String>> makeRecommendResult(Map<String, List<String>> coaches, List<String> recommendCategories) {
+    public Map<String, List<String>> makeRecommendResult(Coaches coaches, List<String> recommendCategories) {
         Map<String, List<String>> recommendResult = new LinkedHashMap<>();
-        for (String coach : coaches.keySet()) {
+        for (String coach : coaches.getCoachesName()) {
             recommendResult.put(coach,new ArrayList<>());
         }
 
         for (String category : recommendCategories) {
-            for (String coach : coaches.keySet()) {
-                String menu = recommendMenu(Category.from(category).getMenus(),coaches.get(coach),recommendResult.get(coach));
+            for (String coach : coaches.getCoachesName()) {
+                String menu = recommendMenu(Category.from(category).getMenus(),coaches.getHateMenus(coach),recommendResult.get(coach));
                 recommendResult.get(coach).add(menu);
             }
         }
         return recommendResult;
     }
 
-    public void displayRecommend(String header,  List<String> result) {
-        outputView.printRecommendResult(header, result);
+    public void displayRecommend(List<String> recommendCategories, Map<String, List<String>> recommendResult) {
+        outputView.printRecommendEND();
+        outputView.printRecommendResult("구분",Arrays.asList("월요일","화요일","수요일","목요일","금요일"));
+        outputView.printRecommendResult("카테고리", recommendCategories);
+        for (String coach : recommendResult.keySet()) {
+            outputView.printRecommendResult(coach,recommendResult.get(coach));
+        }
         outputView.printBlank();
     }
 }
