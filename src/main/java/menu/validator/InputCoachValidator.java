@@ -19,10 +19,8 @@ public class InputCoachValidator extends Validator<String> {
     @Override
     public String validate(String input) {
         List<String> coaches = splitInput(input,COMMA);
-        System.out.println(coaches);
         validateCoachCount(coaches);
         for (String coach : coaches) {
-            System.out.println(coach);
             validateNameLength(coach);
         }
         return input;
@@ -34,7 +32,6 @@ public class InputCoachValidator extends Validator<String> {
         if (nameLength >= NAME_LENGTH_MIN && nameLength <= NAME_LENGTH_MAX) {
             return;
         }
-        System.out.println("이름길이");
         throw new IllegalArgumentException(OUT_OF_NAME_LENGTH.getMessage());
     }
 
@@ -43,7 +40,6 @@ public class InputCoachValidator extends Validator<String> {
         if (coachCount >= COACH_COUNT_MIN && coachCount <= COACH_COUNT_MAX) {
             return;
         }
-        System.out.println("코치명수");
         throw new IllegalArgumentException(OUT_OF_COACH_COUNT.getMessage());
     }
 }
