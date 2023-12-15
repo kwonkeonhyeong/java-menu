@@ -4,6 +4,7 @@ import static menu.convertor.Convertor.COMMA;
 import static menu.convertor.Convertor.splitInput;
 
 import camp.nextstep.edu.missionutils.Randoms;
+import com.sun.security.jgss.GSSUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,15 +23,13 @@ public class MainController {
         outputView.printStart();
         String inputCoachNames = inputView.readCoachName();
         List<String> inputCoaches = splitInput(inputCoachNames,COMMA);
-        List<String> tomiHateMenu = new ArrayList<>(Arrays.asList("맛있는 빵", "김밥", "볶음면"));
-        List<String> jamesHateMenu = new ArrayList<>(Arrays.asList("바케트", "끼슈", "나시고랭"));
-        List<String> pocoHateMenu = new ArrayList<>(Arrays.asList("하이라이스", "떡볶이", "오코노미야끼"));
 
         HashMap<String, List<String>> coaches = new HashMap<>();
-        coaches.put(inputCoaches.get(0),tomiHateMenu);
-        coaches.put(inputCoaches.get(1),jamesHateMenu);
-        coaches.put(inputCoaches.get(2),pocoHateMenu);
-
+        for (String inputCoach : inputCoaches) {
+            String inputHateMenus= inputView.readHateMenu(inputCoach);
+            coaches.put(inputCoach, splitInput(inputHateMenus,COMMA));
+            System.out.println(inputCoach + ":" + coaches.get(inputCoach));
+        }
 
         List<String> japaneseFood = new ArrayList<>(
                 Arrays.asList("규동", "우동", "미소시루", "스시", "가츠동", "오니기리", "하이라이스", "라멘", "오코노미야끼"));

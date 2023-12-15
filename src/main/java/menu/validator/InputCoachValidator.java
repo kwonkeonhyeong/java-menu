@@ -8,7 +8,7 @@ import static menu.utils.ExceptionMessage.OUT_OF_NAME_LENGTH;
 
 import java.util.List;
 
-public class InputValidator extends Validator<String> {
+public class InputCoachValidator extends Validator<String> {
 
     private static final int NAME_LENGTH_MIN = 2;
     private static final int NAME_LENGTH_MAX = 4;
